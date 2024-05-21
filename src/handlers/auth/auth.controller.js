@@ -22,9 +22,14 @@ router.post('/login', async (req, res) => {
         const response = await login(email, password);
         const status = response.status;
 
+        console.log("LOG LOGIN:", response);
+
         res.status(status).json(response)
 
     } catch (error) {
+
+        console.log("ERROR LOGIN:", error.message);
+
         res.status(500).json({
             error: true,
             message: 'Error occured while logging in',
@@ -37,8 +42,6 @@ router.post('/register', async (req, res) => {
     try {
         
         const { email, password, fullName, birthday, pregnancyDate } = req.body;
-
-        console.log('User input:', { email, password, fullName, birthday, pregnancyDate });
 
         if (!email || !password || !fullName || !birthday || !pregnancyDate) {
             return res.status(400).json({ 
@@ -53,14 +56,17 @@ router.post('/register', async (req, res) => {
                 }
             });
         }
-        
     
         const response = await register(email, password, fullName, birthday, pregnancyDate);
         const status = response.status;
+
+        console.log("LOG REGISTER:", response);
     
         res.status(status).json(response)
     
     } catch (error) {
+
+        console.log("ERROR REGISTER:", error.message);
         
         res.status(500).json({
             error: true,
