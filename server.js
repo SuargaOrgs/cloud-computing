@@ -6,7 +6,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // 📦 Route
-const authRouter = require('./handlers/auth/auth.controller');
+const authRouter = require('./src/handlers/auth/auth.controller');
 
 app.use(cors());
 app.use(express.json());
