@@ -16,6 +16,9 @@ app.use(express.urlencoded({ extended: false }));
 app.get("/", (_req, res) => {
     res.status(200).json({ message: "This Api for Suarga App" });
 });
+app.get("/api/v1", (_req, res) => {
+    res.status(200).json({ message: "This Api for Suarga App version 1" });
+});
 
 // 🚀 API ROUTE
 app.use('/api/v1/auth', authRouter);
