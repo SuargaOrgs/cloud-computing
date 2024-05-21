@@ -3,7 +3,7 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 3000;
 
 // 📦 Route
 const authRouter = require('./src/handlers/auth/auth.controller');
