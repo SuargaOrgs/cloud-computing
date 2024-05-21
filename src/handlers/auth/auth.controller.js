@@ -37,7 +37,9 @@ router.post('/register', async (req, res) => {
     try {
         
         const { email, password, fullName, birthday, pregnancyDate } = req.body;
-    
+
+        console.log('User input:', { email, password, fullName, birthday, pregnancyDate });
+
         if (!email || !password || !fullName || !birthday || !pregnancyDate) {
             return res.status(400).json({ 
                 error: true,
@@ -51,6 +53,7 @@ router.post('/register', async (req, res) => {
                 }
             });
         }
+        
     
         const response = await register(email, password, fullName, birthday, pregnancyDate);
         const status = response.status;
