@@ -10,8 +10,8 @@ datasource db {
 model Assessment {
   idAssessment    Int    @id
   idUser          Int
-  tinggiBadan     Int
-  beratBadan      Int
+  tinggiBadan     Float
+  beratBadan      Float
   aktivitasHarian String
   faktor          String
   user            User   @relation(fields: [idUser], references: [idUser])
