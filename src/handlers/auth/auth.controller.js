@@ -1,7 +1,5 @@
 const express = require('express');
 const { login, register } = require('./auth.service');
-const { verifyToken } = require('../../middlewares/jwt');
-
 const router = express.Router();
 
 router.get('/', (_req, res) => {
@@ -77,73 +75,6 @@ router.post('/register', async (req, res) => {
 
     }
 
-});
-
-router.post('/verify-token', async (req, res) => {
-    try {
-
-        const { token } = req.body;
-
-        if (!token) {
-            console.log("LOG : Token is required");
-            return res.status(400).json({
-                status: 400,
-                error: true,
-                message: "Token is required",
-                data: {
-                    token: token ?? null
-                }
-            });
-        }
-
-        const decoded = verifyToken(token);
-
-        if (!decoded) {
-            console.log("LOG : Invalid Token");
-            return res.status(401).json({
-                status: 401,
-                error: true,
-                message: "Invalid token",
-            });
-        }
-
-        if (decoded.exp < Date.now() / 1000) {
-            console.log("LOG : Session expired. Please login again!");
-            return res.status(401).json({
-                status: 401,
-                error: true,
-                message: "Session expired. Please login again!",
-            });
-        }
-
-        console.log("LOG : Token verified successfully");
-        res.status(200).json({
-            status: 200,
-            error: false,
-            message: "Token verified successfully",
-            data: {
-                user: {
-                    idUser: decoded.idUser,
-                    email: decoded.email,
-                    fullName: decoded.fullName,
-                    tanggalLahir: decoded.tanggalLahir,
-                    tanggalKehamilan: decoded.tanggalKehamilan,
-                },
-                token,
-                active: !(decoded.exp < Date.now() / 1000)
-            }
-        })
-
-    } catch (error) {
-
-        console.log("ERROR :", error.message);
-        res.status(500).json({
-            status: 500,
-            error: true,
-            message: 'Error occured while verifying token',
-            data: error.message
-        })
-    }
 });
 
 module.exports = router;
