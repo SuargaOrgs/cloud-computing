@@ -8,13 +8,18 @@ datasource db {
 }
 
 model Assessment {
-  idAssessment    Int    @id
+  idAssessment    Int      @id @default(autoincrement())
   idUser          Int
-  tinggiBadan     Float
-  beratBadan      Float
+  tinggiBadan     Int      @db.TinyInt
+  beratBadan      Int      @db.TinyInt
   aktivitasHarian String
   faktor          String
-  user            User   @relation(fields: [idUser], references: [idUser])
+  karbohidrat     Int      @default(0) @db.TinyInt
+  protein         Int      @default(0) @db.TinyInt
+  lemak           Int      @default(0) @db.TinyInt
+  created_at      DateTime @default(now()) @db.Date
+  updated_at      DateTime @default(now()) @db.Date
+  user            User     @relation(fields: [idUser], references: [idUser])
 
   @@index([idAssessment, idUser], map: "assessment_index")
   @@index([idUser], map: "Assessment_idUser_fkey")
@@ -25,8 +30,8 @@ model User {
   email            String       @unique
   password         String
   namaLengkap      String
-  tanggalLahir     DateTime     @db.Date
-  tanggalKehamilan DateTime     @db.Date
+  tanggalLahir     DateTime?    @db.Date
+  tanggalKehamilan DateTime?    @db.Date
   createdAt        DateTime     @default(now())
   updatedAt        DateTime     @default(now())
   assessments      Assessment[]
