@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {createAssessment} = require('./assessment.service');
+const {createAssessment, getAssessment} = require('./assessment.service');
 
 // GET /api/v1/assessment
 router.get('/', async (req, res) => {
