@@ -79,7 +79,7 @@ const getAssessment = async (data) => {
         if (assessment.length === 0) {
             return {
                 status: 404,
-                error: true,
+                error: false,
                 message: "Assessment not found",
                 data: []
             }
