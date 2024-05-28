@@ -43,7 +43,7 @@ async function createAssessment(data) {
     }
 }
 
-const getAssessment = (data) => {
+const getAssessment = async (data) => {
 
     const { token } = data;
 
@@ -58,7 +58,7 @@ const getAssessment = (data) => {
     }
 
     try {
-        const assessment = prisma.assessment.findMany({
+        const assessment = await prisma.assessment.findMany({
             select: {
                 idAssessment: true,
                 idUser: true,
