@@ -76,6 +76,15 @@ const getAssessment = async (data) => {
             }
         });
 
+        if (assessment.length === 0) {
+            return {
+                status: 404,
+                error: true,
+                message: "Assessment not found",
+                data: []
+            }
+        }
+
         return {
             status: 200,
             error: false,
@@ -86,7 +95,7 @@ const getAssessment = async (data) => {
         return {
             status: 500,
             error: true,
-            message: "Assessment not found",
+            message: "Cannot get assessment data",
             data: error.message
         };
     }
