@@ -43,6 +43,56 @@ async function createAssessment(data) {
     }
 }
 
+const getAssessment = (data) => {
+
+    const { token } = data;
+
+    const verify = verifyToken(token)
+
+    if (!verify) {
+        return {
+            status: 401,
+            error: true,
+            message: "Token not valid"
+        }
+    }
+
+    try {
+        const assessment = prisma.assessment.findMany({
+            select: {
+                idAssessment: true,
+                idUser: true,
+                tinggiBadan: true,
+                beratBadan: true,
+                aktivitasHarian: true,
+                faktor: true,
+                karbohidrat: true,
+                protein: true,
+                lemak: true,
+                updated_at: true
+            },
+            where: {
+                idUser: verify.idUser
+            }
+        });
+
+        return {
+            status: 200,
+            error: false,
+            message: "Assassment has been found",
+            data: assessment
+        };
+    } catch (error) {
+        return {
+            status: 500,
+            error: true,
+            message: "Assessment not found",
+            data: error.message
+        };
+    }
+}
+
 module.exports = {
     createAssessment,
+    getAssessment
 };
