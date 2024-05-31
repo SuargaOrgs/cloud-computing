@@ -26,14 +26,14 @@ model Assessment {
 }
 
 model User {
-  idUser           Int          @id @default(autoincrement())
-  email            String       @unique
+  idUser           Int              @id @default(autoincrement())
+  email            String           @unique
   password         String
   namaLengkap      String
-  tanggalLahir     DateTime?    @db.Date
-  tanggalKehamilan DateTime?    @db.Date
-  createdAt        DateTime     @default(now())
-  updatedAt        DateTime     @default(now())
+  tanggalLahir     DateTime?        @db.Date
+  tanggalKehamilan DateTime?        @db.Date
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @default(now())
   assessments      Assessment[]
   imageNutritions  ImageNutrition[]
 
@@ -41,28 +41,30 @@ model User {
 }
 
 model FoodStorage {
-  id              Int         @id @default(autoincrement())
-  namaMakanan     String      @db.Text
-  kalori          Int         @default(0) @db.TinyInt
-  karbohidrat     Int         @default(0) @db.TinyInt
-  lemak           Int         @default(0) @db.TinyInt
-  protein         Int         @default(0) @db.TinyInt
-  createdAt       DateTime    @default(now()) @db.Date
-  makanans        ImageNutrition[]
-  
+  id          Int              @id @default(autoincrement())
+  namaMakanan String           @db.Text
+  karbohidrat Int              @default(0) @db.SmallInt
+  lemak       Int              @default(0) @db.SmallInt
+  protein     Int              @default(0) @db.SmallInt
+  createdAt   DateTime         @default(now()) @db.Date
+  makanans    ImageNutrition[]
+
   @@index([id], map: "foodstorage_index")
 }
 
 model ImageNutrition {
-  id              Int           @id @default(autoincrement())
-  idUser          Int
-  idMakanan       Int
-  gambar          String        @db.Text @default("")
-  waktuMakan      WaktuMakan 
-  updated_at      DateTime      @default(now()) @db.Date
-  created_at      DateTime      @default(now()) @db.Date
-  user            User          @relation(fields: [idUser], references: [idUser], onDelete: Cascade)
-  makanan         FoodStorage   @relation(fields: [idMakanan], references: [id], onDelete: Cascade)
+  id         Int         @id @default(autoincrement())
+  idUser     Int
+  idMakanan  Int
+  gambar     String      @default("") @db.Text
+  waktuMakan WaktuMakan
+  updated_at DateTime    @default(now()) @db.Date
+  created_at DateTime    @default(now()) @db.Date
+  makanan    FoodStorage @relation(fields: [idMakanan], references: [id], onDelete: Cascade)
+  user       User        @relation(fields: [idUser], references: [idUser], onDelete: Cascade)
+
+  @@index([idMakanan], map: "ImageNutrition_idMakanan_fkey")
+  @@index([idUser], map: "ImageNutrition_idUser_fkey")
 }
 
 enum WaktuMakan {

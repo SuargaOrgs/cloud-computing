@@ -9,6 +9,7 @@ const upload = multer();
 // 📦 Route
 const authRouter = require('./src/handlers/auth/auth.controller');
 const assessmentRouter = require('./src/handlers/assessment/assessment.controller');
+const nutritionRouter = require('./src/handlers/nutrition/nutrition.controller');
 
 app.use(cors());
 app.use(express.json());
@@ -25,6 +26,7 @@ app.get("/api/v1", (_req, res) => {
 // 🚀 API ROUTE
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/assessment', assessmentRouter);
+app.use('/api/v1/nutrition', nutritionRouter);
 
 // 💨 Not Found Route
 app.get("*", (_req, res) => {
