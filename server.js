@@ -32,10 +32,8 @@ app.get("*", (_req, res) => {
 app.post('/uploadGambar', (req, res) => {
 
     console.log("Req: ",req);
-    console.log('req.files >>>', req.files);
-    const { image } = req.files;
 
-    return res.status(200).json({ message: "Upload Image", image: image });
+    return res.status(200).json({ message: "Upload Image", image: req });
 });
 
 app.listen(port, () => {
