@@ -1,8 +1,10 @@
 const express = require("express");
 const cors = require("cors");
+const multer = require("multer");
 require("dotenv").config();
 const app = express();
 const port = 3000;
+const upload = multer();
 
 // 📦 Route
 const authRouter = require('./src/handlers/auth/auth.controller');
@@ -29,11 +31,14 @@ app.get("*", (_req, res) => {
     res.status(404).send("Route Not found");
 });
 
-app.post('/uploadGambar', (req, res) => {
-
+app.post('/uploadGambar', upload.single("image"), (req, res) => {
     console.log("Req: ",req);
 
-    return res.status(200).json({ message: "Upload Image", image: req });
+    res.json({
+        message: "Upload Gambar Berhasil",
+        data: req.file
+    });
+
 });
 
 app.listen(port, () => {
