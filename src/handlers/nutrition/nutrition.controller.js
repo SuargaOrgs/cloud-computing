@@ -8,7 +8,7 @@ router.get('/', (_req, res) => {
 });
 
 // POST /api/v1/nutrition mengambil data nutrisi
-router.post('/', extractToken, async (req, res) => {
+router.post('/', extractToken(), async (req, res) => {
     try {
 
         const { token } = req;
@@ -40,7 +40,7 @@ router.post('/', extractToken, async (req, res) => {
 });
 
 // POST /api/v1/nutrition/detail mengambil detail data nutrisi
-router.post('/detail', extractToken, async (req, res) => {
+router.post('/detail', extractToken(), async (req, res) => {
     try {
 
         const { token } = req;

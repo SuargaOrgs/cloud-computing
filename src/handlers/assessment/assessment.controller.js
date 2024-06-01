@@ -4,7 +4,7 @@ const {createAssessment, getAssessment} = require('./assessment.service');
 const extractToken = require('../../middlewares/extractToken');
 
 // GET /api/v1/assessment
-router.get('/', extractToken, async (req, res) => {
+router.get('/', extractToken(), async (req, res) => {
     
     const { token } = req;
 
@@ -35,7 +35,7 @@ router.get('/', extractToken, async (req, res) => {
 });
 
 // POST /api/v1/assessment
-router.post('/', extractToken, async (req, res) => {
+router.post('/', extractToken(), async (req, res) => {
 
     const { tinggiBadan, beratBadan, aktivitasHarian, faktor, karbohidrat, protein, lemak } = req.body;
     const { token } = req;
