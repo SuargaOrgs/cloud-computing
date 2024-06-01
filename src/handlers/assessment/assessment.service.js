@@ -18,13 +18,13 @@ async function createAssessment(data) {
         await prisma.assessment.create({
             data:{
                 idUser: verify.idUser,
-                tinggiBadan : tinggiBadan,
-                beratBadan : beratBadan,
+                tinggiBadan : Number(tinggiBadan),
+                beratBadan : Number(beratBadan),
                 aktivitasHarian: aktivitasHarian,
                 faktor : faktor,
-                karbohidrat : karbohidrat,
-                protein : protein,
-                lemak : lemak
+                karbohidrat : Number(karbohidrat),
+                protein : Number(protein),
+                lemak : Number(lemak)
             }
         });
 

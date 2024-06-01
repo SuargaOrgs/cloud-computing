@@ -10,13 +10,13 @@ datasource db {
 model Assessment {
   idAssessment    Int      @id @default(autoincrement())
   idUser          Int
-  tinggiBadan     Int      @db.TinyInt
-  beratBadan      Int      @db.TinyInt
+  tinggiBadan     Int      @db.SmallInt
+  beratBadan      Int      @db.SmallInt
   aktivitasHarian String
   faktor          String
-  karbohidrat     Int      @default(0) @db.TinyInt
-  protein         Int      @default(0) @db.TinyInt
-  lemak           Int      @default(0) @db.TinyInt
+  karbohidrat     Int      @default(0) @db.SmallInt
+  protein         Int      @default(0) @db.SmallInt
+  lemak           Int      @default(0) @db.SmallInt
   created_at      DateTime @default(now()) @db.Date
   updated_at      DateTime @default(now()) @db.Date
   user            User     @relation(fields: [idUser], references: [idUser], onDelete: Cascade)
