@@ -43,9 +43,10 @@ model User {
 model FoodStorage {
   id          Int              @id @default(autoincrement())
   namaMakanan String           @db.Text
-  karbohidrat Int              @default(0) @db.SmallInt
-  lemak       Int              @default(0) @db.SmallInt
-  protein     Int              @default(0) @db.SmallInt
+  karbohidrat Float            @default(0) @db.Float
+  lemak       Float            @default(0) @db.Float
+  protein     Float            @default(0) @db.Float
+  vitamin     String?          @db.VarChar(255)
   createdAt   DateTime         @default(now()) @db.Date
   makanans    ImageNutrition[]
 
