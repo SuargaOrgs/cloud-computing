@@ -1,16 +1,17 @@
 const express = require('express');
 const { getData, detailData } = require('./nutrition.service');
 const router = express.Router();
+const extractToken = require('../../middlewares/extractToken');
 
 router.get('/', (_req, res) => {
     res.status(200).json({ message: "Welcome to route nutrition Suarga App" });
 });
 
 // POST /api/v1/nutrition mengambil data nutrisi
-router.post('/', async (req, res) => {
+router.post('/', extractToken, async (req, res) => {
     try {
 
-        const { token } = req.body;
+        const { token } = req;
 
         if (!token) {
             return res.status(400).json({
@@ -39,10 +40,10 @@ router.post('/', async (req, res) => {
 });
 
 // POST /api/v1/nutrition/detail mengambil detail data nutrisi
-router.post('/detail', async (req, res) => {
+router.post('/detail', extractToken, async (req, res) => {
     try {
 
-        const { token } = req.body;
+        const { token } = req;
 
         if (!token) {
             return res.status(400).json({

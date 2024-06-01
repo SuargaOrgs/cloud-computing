@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const {createAssessment, getAssessment} = require('./assessment.service');
+const extractToken = require('../../middlewares/extractToken');
 
 // GET /api/v1/assessment
-router.get('/', async (req, res) => {
+router.get('/', extractToken, async (req, res) => {
     
-    const { token } = req.body;
+    const { token } = req;
 
     if (token == null) {
         return res.status(404).json({
@@ -34,8 +35,10 @@ router.get('/', async (req, res) => {
 });
 
 // POST /api/v1/assessment
-router.post('/', async (req, res) => {
-    const { token, tinggiBadan, beratBadan, aktivitasHarian, faktor, karbohidrat, protein, lemak } = req.body;
+router.post('/', extractToken, async (req, res) => {
+
+    const { tinggiBadan, beratBadan, aktivitasHarian, faktor, karbohidrat, protein, lemak } = req.body;
+    const { token } = req;
 
     if (token == null || tinggiBadan == null || beratBadan == null || aktivitasHarian == null || faktor == null) {
         return res.status(404).json({
