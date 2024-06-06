@@ -8,15 +8,15 @@ const app = express();
 const port = 3000;
 const upload = multer();
 
-class L2 {
+// class L2 {
 
-    static className = 'L2';
+//     static className = 'L2';
 
-    constructor(config) {
-       return tf.regularizers.l1l2(config)
-    }
-}
-tf.serialization.registerClass(L2);
+//     constructor(config) {
+//        return tf.regularizers.l1l2(config)
+//     }
+// }
+// tf.serialization.registerClass(L2);
 
 // 📦 Route
 const authRouter = require('./src/handlers/auth/auth.controller');
@@ -31,8 +31,13 @@ app.use(express.urlencoded({ extended: false }));
 app.get("/", (_req, res) => {
     res.status(200).json({ message: "This Api for Suarga App" });
 });
+
 app.get("/api/v1", (_req, res) => {
     res.status(200).json({ message: "This Api for Suarga App version 1" });
+});
+
+app.get("/TestModel", (_req, res) => {
+    res.status(200).json({ message: "Model Testing" });
 });
 
 // 🚀 API ROUTE
