@@ -31,7 +31,7 @@ router.post('/login', async (req, res) => {
 
         res.status(500).json({
             error: true,
-            message: 'Error occured while logging in',
+            message: 'System error occured while login, please try again later',
             data: error.message
         })
     }
@@ -69,7 +69,7 @@ router.post('/register', async (req, res) => {
 
         res.status(500).json({
             error: true,
-            message: 'Error occured while registering',
+            message: 'System error occured while register, please try again later',
             data: error.message
         })
 

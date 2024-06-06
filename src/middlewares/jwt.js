@@ -4,7 +4,7 @@ const SECRET_KEY = 'S%4X&SDsd1o#jsadnid^jsdbj*dsajdb#';
 
 const generateAccessToken = (payload) => {
   const options = {
-    expiresIn: '1d',
+    expiresIn: '7d',
   };
 
   return jwt.sign(payload, SECRET_KEY, options);

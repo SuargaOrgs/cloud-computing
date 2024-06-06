@@ -1,11 +1,22 @@
 const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
-const tf = require('@tensorflow/tfjs');
+const path = require('path');
+const tf = require('@tensorflow/tfjs-node');
 require("dotenv").config();
 const app = express();
 const port = 3000;
 const upload = multer();
+
+class L2 {
+
+    static className = 'L2';
+
+    constructor(config) {
+       return tf.regularizers.l1l2(config)
+    }
+}
+tf.serialization.registerClass(L2);
 
 // 📦 Route
 const authRouter = require('./src/handlers/auth/auth.controller');
@@ -29,36 +40,38 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/assessment', assessmentRouter);
 app.use('/api/v1/nutrition', nutritionRouter);
 
-
 app.post('/uploadGambar', upload.single("image"), (req, res) => {
-    console.log("Req: ",req);
-    
+    console.log("Req: ", req);
+
     res.json({
         message: "Upload Gambar Berhasil",
         data: req.file
     });
-
 });
 
-app.get('/predict', async (req, res) => {
-    const model = await tf.loadLayersModel('./src/models/models.json');
-    
-    // let data = {
-    //   gender: Number(req.body.gender),
-    //   height: Number(req.body.height),
-    //   weight: Number(req.body.weight),
-    // };
-    
-    // const example = tf.tensor2d([[data.gender, data.height, data.weight]]);
-    // const prediction = model.predict(example).argMax(1).dataSync()[0];
-    // const category = categoryleveling[prediction];
-    // res.json({ prediction, category });
-    
-    res.json({
-        message: "Predict Berhasil",
-        data: model
-    })
-});
+// app.get('/getMyModel', async (req, res) => {
+//     const filePath = path.resolve(__dirname, './src/models/models.json');
+//     return res.sendFile(filePath);
+// });
+
+// app.get('/predict', async (req, res) => {
+//     try {
+//         const model = await tf.loadLayersModel('http://localhost:3000/getMyModel');
+//         // const model = await tf.loadLayersModel('https://storage.googleapis.com/pcp-detection/model.json');
+//         // const model = await tf.loadLayersModel('https://raw.githubusercontent.com/sofit-c23-ps233/SoFit-MachineLearning/main/model_ml/model.json');
+
+//         res.json({
+//             message: "Predict Berhasil",
+//             data: model.summary()
+//         })
+//     } catch (error) {
+//         res.json({
+//             message: "Predict Gagal",
+//             data: error.message
+//         });
+//     }
+
+// });
 
 // 💨 Not Found Route
 app.get("*", (_req, res) => {

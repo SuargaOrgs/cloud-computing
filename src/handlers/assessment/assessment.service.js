@@ -10,7 +10,7 @@ async function createAssessment(data) {
         return {
             status: 401,
             error: true,
-            message: "Token not valid"
+            message: "Session has expired, please login again!!"
         }
     }
 
@@ -53,7 +53,7 @@ const getAssessment = async (data) => {
         return {
             status: 401,
             error: true,
-            message: "Token not valid"
+            message: "Session has expired, please login again!!"
         }
     }
 
