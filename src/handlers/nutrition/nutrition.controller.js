@@ -1,5 +1,5 @@
 const express = require('express');
-const { getData, detailData, uploadData, predictImage } = require('./nutrition.service');
+const { getData, detailData, uploadData, predictImage, saveImageNutrition, getFoodStorage } = require('./nutrition.service');
 const router = express.Router();
 const multer = require("multer");
 const upload = multer({
@@ -21,13 +21,12 @@ router.get('/', (_req, res) => {
 // POST /api/v1/nutrition mengambil data nutrisi
 router.post('/', extractToken, async (req, res) => {
     try {
-
         const { token } = req;
 
         if (!token) {
             return res.status(400).json({
                 error: true,
-                message: "token are required"
+                message: "Token is required"
             });
         }
 
@@ -37,14 +36,12 @@ router.post('/', extractToken, async (req, res) => {
         console.log("LOG :", response);
 
         res.status(status).json(response)
-
     } catch (error) {
-
         console.log("ERROR :", error.message);
 
         res.status(500).json({
             error: true,
-            message: 'Error occured while getting nutrition data',
+            message: 'Error occurred while getting nutrition data',
             data: error.message
         })
     }
@@ -53,13 +50,12 @@ router.post('/', extractToken, async (req, res) => {
 // POST /api/v1/nutrition/detail mengambil detail data nutrisi
 router.post('/detail', extractToken, async (req, res) => {
     try {
-
         const { token } = req;
 
         if (!token) {
             return res.status(400).json({
                 error: true,
-                message: "token are required"
+                message: "Token is required"
             });
         }
 
@@ -69,22 +65,48 @@ router.post('/detail', extractToken, async (req, res) => {
         console.log("LOG :", response);
 
         res.status(status).json(response)
-
     } catch (error) {
-
         console.log("ERROR :", error.message);
 
         res.status(500).json({
             error: true,
-            message: 'Error occured while getting nutrition data',
+            message: 'Error occurred while getting nutrition data',
             data: error.message
         })
     }
 });
 
+// POST /api/v1/nutrition/imageNutrition
+router.post('/imageNutrition', extractToken, async (req, res) => {
+    try {
+        const { token } = req;
+        const { linkGambar, namaAktivitas, waktuMakan, idMakanan, porsi } = req.body;
+
+        if (!token || !linkGambar || !namaAktivitas || !waktuMakan || !idMakanan || !porsi) {
+            return res.status(400).json({
+                error: true,
+                message: "All fields are required"
+            });
+        }
+
+        const response = await saveImageNutrition({ token, linkGambar, namaAktivitas, waktuMakan, idMakanan, porsi });
+        const status = response.status;
+
+        res.status(status).json(response)
+    } catch (error) {
+        console.log("ERROR :", error.message);
+
+        res.status(500).json({
+            error: true,
+            message: 'Error occurred while saving image nutrition data',
+            data: error.message
+        })
+    }
+});
+
+// POST /api/v1/nutrition/upload
 router.post('/upload', extractToken, upload.single("image"), async (req, res) => {
     try {
-
         const { token } = req;
 
         if (!token) {
@@ -122,7 +144,6 @@ router.post('/upload', extractToken, upload.single("image"), async (req, res) =>
         res.status(status).json(response)
 
     } catch (error) {
-
         console.log("ERROR :", error.message);
 
         res.status(500).json({
@@ -142,6 +163,34 @@ router.post('/upload', extractToken, upload.single("image"), async (req, res) =>
     }
 });
 
+// GET /api/v1/nutrition/foodStorage
+router.get('/foodStorage', extractToken, async (req, res) => {
+    try {
+        const { token } = req;
+
+        if (!token) {
+            return res.status(400).json({
+                error: true,
+                message: "Token is required"
+            });
+        }
+
+        const response = await getFoodStorage({ token });
+        const status = response.status;
+
+        res.status(status).json(response)
+    } catch (error) {
+        console.log("ERROR :", error.message);
+
+        res.status(500).json({
+            error: true,
+            message: 'Error occured while getting food data',
+            data: error.message
+        })
+    }
+});
+
+// POST /api/v1/nutrition/predict
 router.post('/predict', extractToken, upload.single("image"), async (req, res) => {
     try {
 
