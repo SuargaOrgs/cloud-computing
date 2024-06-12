@@ -158,7 +158,7 @@ const saveImageNutrition = async (data) => {
                 NamaAktivitas: namaAktivitas,
                 gambar: linkGambar,
                 waktuMakan,
-                porsi,
+                porsi : parseInt(porsi)
             }
         });
 
