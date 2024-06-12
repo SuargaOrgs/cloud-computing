@@ -105,63 +105,63 @@ router.post('/imageNutrition', extractToken, async (req, res) => {
 });
 
 // POST /api/v1/nutrition/upload
-router.post('/upload', extractToken, upload.single("image"), async (req, res) => {
-    try {
-        const { token } = req;
+// router.post('/upload', extractToken, upload.single("image"), async (req, res) => {
+//     try {
+//         const { token } = req;
 
-        if (!token) {
-            return res.status(400).json({
-                error: true,
-                message: "token are required"
-            });
-        }
+//         if (!token) {
+//             return res.status(400).json({
+//                 error: true,
+//                 message: "token are required"
+//             });
+//         }
 
-        const { slugResult, waktuMakan, porsi, namaAktivitas } = req.body;
+//         const { slugResult, waktuMakan, porsi, namaAktivitas } = req.body;
 
-        if (!slugResult || !waktuMakan || !porsi || !namaAktivitas) {
-            return res.status(400).json({
-                error: true,
-                message: "Fields are required"
-            });
+//         if (!slugResult || !waktuMakan || !porsi || !namaAktivitas) {
+//             return res.status(400).json({
+//                 error: true,
+//                 message: "Fields are required"
+//             });
             
-        }
+//         }
 
-        if (!req.file) {
-            res.status(400).json({
-                error: true,
-                message: "No file uploaded"
-            });
-            return;
-        }
+//         if (!req.file) {
+//             res.status(400).json({
+//                 error: true,
+//                 message: "No file uploaded"
+//             });
+//             return;
+//         }
 
-        const file = req.file
+//         const file = req.file
 
-        const response = await uploadData({ token, file, slugResult, waktuMakan, porsi, namaAktivitas});
-        const status = response.status;
+//         const response = await uploadData({ token, file, slugResult, waktuMakan, porsi, namaAktivitas});
+//         const status = response.status;
 
-        console.log("LOG :", response);
+//         console.log("LOG :", response);
 
-        res.status(status).json(response)
+//         res.status(status).json(response)
 
-    } catch (error) {
-        console.log("ERROR :", error.message);
+//     } catch (error) {
+//         console.log("ERROR :", error.message);
 
-        res.status(500).json({
-            error: true,
-            message: 'Error occured while getting nutrition data',
-            data: error.message
-        })
-    }
-}, (error, req, res, next) => {
-    if (error instanceof multer.MulterError && error.code === 'LIMIT_FILE_SIZE') {
-        res.status(413).json({
-            error: true,
-            message: 'File size too large. Max size is 1MB'
-        })
-    } else {
-        next(error);
-    }
-});
+//         res.status(500).json({
+//             error: true,
+//             message: 'Error occured while getting nutrition data',
+//             data: error.message
+//         })
+//     }
+// }, (error, req, res, next) => {
+//     if (error instanceof multer.MulterError && error.code === 'LIMIT_FILE_SIZE') {
+//         res.status(413).json({
+//             error: true,
+//             message: 'File size too large. Max size is 1MB'
+//         })
+//     } else {
+//         next(error);
+//     }
+// });
 
 // GET /api/v1/nutrition/foodStorage
 router.get('/foodStorage', extractToken, async (req, res) => {
@@ -191,54 +191,54 @@ router.get('/foodStorage', extractToken, async (req, res) => {
 });
 
 // POST /api/v1/nutrition/predict
-router.post('/predict', extractToken, upload.single("image"), async (req, res) => {
-    try {
+// router.post('/predict', extractToken, upload.single("image"), async (req, res) => {
+//     try {
 
-        const { token } = req;
+//         const { token } = req;
 
-        if (!req.file) {
-            res.status(400).json({
-                error: true,
-                message: "No file uploaded"
-            });
-            return;
-        }
+//         if (!req.file) {
+//             res.status(400).json({
+//                 error: true,
+//                 message: "No file uploaded"
+//             });
+//             return;
+//         }
 
-        const file = req.file
+//         const file = req.file
 
-        if (!token) {
-            return res.status(400).json({
-                error: true,
-                message: "token are required"
-            });
-        }
+//         if (!token) {
+//             return res.status(400).json({
+//                 error: true,
+//                 message: "token are required"
+//             });
+//         }
 
-        const response = await predictImage({ token, file });
-        const status = response.status;
+//         const response = await predictImage({ token, file });
+//         const status = response.status;
 
-        console.log("LOG :", response);
+//         console.log("LOG :", response);
 
-        res.status(status).json(response)
+//         res.status(status).json(response)
 
-    } catch (error) {
+//     } catch (error) {
 
-        console.log("ERROR :", error.message);
+//         console.log("ERROR :", error.message);
 
-        res.status(500).json({
-            error: true,
-            message: 'Error occured while predicting image',
-            data: error.message
-        })
-    }
-}, (error, req, res, next) => {
-    if (error instanceof multer.MulterError && error.code === 'LIMIT_FILE_SIZE') {
-        res.status(413).json({
-            error: true,
-            message: 'File size too large. Max size is 1MB'
-        })
-    } else {
-        next(error);
-    }
-});
+//         res.status(500).json({
+//             error: true,
+//             message: 'Error occured while predicting image',
+//             data: error.message
+//         })
+//     }
+// }, (error, req, res, next) => {
+//     if (error instanceof multer.MulterError && error.code === 'LIMIT_FILE_SIZE') {
+//         res.status(413).json({
+//             error: true,
+//             message: 'File size too large. Max size is 1MB'
+//         })
+//     } else {
+//         next(error);
+//     }
+// });
 
 module.exports = router;

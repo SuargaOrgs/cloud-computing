@@ -182,7 +182,7 @@ const saveImageNutrition = async (data) => {
         const imageNutrition = await prisma.imageNutrition.create({
             data: {
                 idUser: verify.idUser,
-                idMakanan,
+                idMakanan : parseInt(idMakanan),
                 NamaAktivitas: namaAktivitas,
                 gambar: linkGambar,
                 waktuMakan,
