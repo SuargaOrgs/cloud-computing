@@ -77,19 +77,29 @@ router.post('/detail', extractToken, async (req, res) => {
 });
 
 // POST /api/v1/nutrition/imageNutrition
-router.post('/imageNutrition', extractToken, async (req, res) => {
+router.post('/imageNutrition', extractToken, upload.single("image"), async (req, res) => {
     try {
         const { token } = req;
-        const { linkGambar, namaAktivitas, waktuMakan, idMakanan, porsi } = req.body;
+        const { namaAktivitas, waktuMakan, idMakanan, porsi } = req.body;
 
-        if (!token || !linkGambar || !namaAktivitas || !waktuMakan || !idMakanan || !porsi) {
+        if (!token || !namaAktivitas || !waktuMakan || !idMakanan || !porsi) {
             return res.status(400).json({
                 error: true,
                 message: "All fields are required"
             });
         }
 
-        const response = await saveImageNutrition({ token, linkGambar, namaAktivitas, waktuMakan, idMakanan, porsi });
+        if (!req.file) {
+            res.status(400).json({
+                error: true,
+                message: "No file uploaded"
+            });
+            return;
+        }
+
+        const file = req.file
+
+        const response = await saveImageNutrition({ token, file, namaAktivitas, waktuMakan, idMakanan, porsi });
         const status = response.status;
 
         res.status(status).json(response)
@@ -123,7 +133,7 @@ router.post('/imageNutrition', extractToken, async (req, res) => {
 //                 error: true,
 //                 message: "Fields are required"
 //             });
-            
+
 //         }
 
 //         if (!req.file) {

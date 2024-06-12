@@ -166,7 +166,7 @@ const detailData = async (data) => {
 };
 
 const saveImageNutrition = async (data) => {
-    const { token, linkGambar, namaAktivitas, waktuMakan, idMakanan, porsi } = data;
+    const { token, file, namaAktivitas, waktuMakan, idMakanan, porsi } = data;
 
     const verify = verifyToken(token);
 
@@ -179,22 +179,41 @@ const saveImageNutrition = async (data) => {
     }
 
     try {
-        const imageNutrition = await prisma.imageNutrition.create({
-            data: {
-                idUser: verify.idUser,
-                idMakanan : parseInt(idMakanan),
-                NamaAktivitas: namaAktivitas,
-                gambar: linkGambar,
-                waktuMakan,
-                porsi : parseInt(porsi)
-            }
+
+        const getNamaMakanan = await prisma.foodStorage.findFirst({
+            where: { id: parseInt(idMakanan) },
+            select: { namaMakanan: true }
         });
+
+        const getSlug = getNamaMakanan.namaMakanan.toLowerCase().split(' ').join('-');
+
+        const storeImage = await handleImageUpload(file, getSlug);
+
+        try {
+            await prisma.imageNutrition.create({
+                data: {
+                    idUser: verify.idUser,
+                    idMakanan: parseInt(idMakanan),
+                    NamaAktivitas: namaAktivitas,
+                    gambar: storeImage.publicUrl,
+                    waktuMakan,
+                    porsi: parseInt(porsi)
+                }
+            });
+        } catch (error) {
+            await deleteImageStorage(storeImage.publicUrl);
+            return {
+                status: 400,
+                error: true,
+                message: 'Terjadi Masalah saat Upload Data, Lakukan Upload Ulang!!',
+                errorMessage: error.message,
+            };
+        }
 
         return {
             status: 201,
             error: false,
             message: "Image nutrition data has been saved",
-            data: imageNutrition
         };
     } catch (error) {
         return {
