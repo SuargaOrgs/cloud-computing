@@ -2,32 +2,31 @@ const prisma = require('../../helpers/prisma');
 const { handleImageUpload, deleteImageStorage } = require('../../helpers/storageImages');
 const { verifyToken } = require('../../middlewares/jwt');
 const { formatDateText } = require('../../helpers/formatDate');
-const tf = require('@tensorflow/tfjs-node');
+// const tf = require('@tensorflow/tfjs-node');
 
-class L2 extends tf.regularizers.l1l2 {
-    constructor(config) {
-        super(config);
-        this.l2 = config.l2;
-    }
+// class L2 extends tf.regularizers.l1l2 {
+//     constructor(config) {
+//         super(config);
+//         this.l2 = config.l2;
+//     }
 
-    apply(x) {
-        return tf.mul(this.l2, tf.sum(tf.square(x)));
-    }
+//     apply(x) {
+//         return tf.mul(this.l2, tf.sum(tf.square(x)));
+//     }
 
-    getConfig() {
-        return { l2: this.l2 };
-    }
+//     getConfig() {
+//         return { l2: this.l2 };
+//     }
 
-    static get className() {
-        return 'L2';
-    }
-}
+//     static get className() {
+//         return 'L2';
+//     }
+// }
 
-tf.serialization.registerClass(L2);
+// tf.serialization.registerClass(L2);
 
 
 // SERVICE API 
-
 
 const getData = async (data) => {
     const { token } = data;
@@ -248,208 +247,208 @@ const getFoodStorage = async (data) => {
     }
 };
 
-const predictImage = async (data) => {
+// const predictImage = async (data) => {
 
-    const { token, file } = data;
+//     const { token, file } = data;
 
-    const verify = verifyToken(token)
+//     const verify = verifyToken(token)
 
-    if (!verify) {
-        return {
-            status: 401,
-            error: true,
-            message: "Session has expired, please login again!!"
-        }
+//     if (!verify) {
+//         return {
+//             status: 401,
+//             error: true,
+//             message: "Session has expired, please login again!!"
+//         }
 
-    }
+//     }
 
-    try {
+//     try {
 
-        const model = await tf.loadLayersModel('https://storage.googleapis.com/bucket-suarga-app/model/modelNW.json');
+//         const model = await tf.loadLayersModel('https://storage.googleapis.com/bucket-suarga-app/model/modelNW.json');
 
-        const imageBuffer = file.buffer;
-        const tensor = tf.node.decodeImage(imageBuffer, 3)
-            .resizeNearestNeighbor([299, 299])
-            .expandDims()
-            .toFloat()
-            .div(tf.scalar(255.0));
+//         const imageBuffer = file.buffer;
+//         const tensor = tf.node.decodeImage(imageBuffer, 3)
+//             .resizeNearestNeighbor([299, 299])
+//             .expandDims()
+//             .toFloat()
+//             .div(tf.scalar(255.0));
 
-        const prediction = await model.predict(tensor).data();
+//         const prediction = await model.predict(tensor).data();
 
-        const index = prediction.indexOf(Math.max(...prediction));
+//         const index = prediction.indexOf(Math.max(...prediction));
 
-        const indexValue = prediction[index];
+//         const indexValue = prediction[index];
 
-        if (indexValue < 0 && indexValue > 1) {
-            return {
-                status: 400,
-                error: true,
-                message: 'Upload atau Prediksi Gagal',
-                indexValue: indexValue,
-            };
-        } else if (indexValue < 0.5) {
-            return {
-                status: 400,
-                error: true,
-                message: 'Prediksi Gagal, Gambar tidak terdeteksi',
-                indexValue: indexValue,
-            };
-        }
+//         if (indexValue < 0 && indexValue > 1) {
+//             return {
+//                 status: 400,
+//                 error: true,
+//                 message: 'Upload atau Prediksi Gagal',
+//                 indexValue: indexValue,
+//             };
+//         } else if (indexValue < 0.5) {
+//             return {
+//                 status: 400,
+//                 error: true,
+//                 message: 'Prediksi Gagal, Gambar tidak terdeteksi',
+//                 indexValue: indexValue,
+//             };
+//         }
 
-        const dataMakanan = await prisma.foodStorage.findMany({
-            select: {
-                id: true,
-                namaMakanan: true,
-            }
-        });
+//         const dataMakanan = await prisma.foodStorage.findMany({
+//             select: {
+//                 id: true,
+//                 namaMakanan: true,
+//             }
+//         });
 
-        const dataMakananCategory = dataMakanan.reduce((acc, curr, index) => {
-            acc[index] = [curr.namaMakanan.toLowerCase().split(' ').join('-'), curr.namaMakanan];
-            return acc;
-        }, {});
+//         const dataMakananCategory = dataMakanan.reduce((acc, curr, index) => {
+//             acc[index] = [curr.namaMakanan.toLowerCase().split(' ').join('-'), curr.namaMakanan];
+//             return acc;
+//         }, {});
 
-        // console.log("Data Makanan Category : ", dataMakananCategory);
+//         // console.log("Data Makanan Category : ", dataMakananCategory);
 
-        let predictionResult = dataMakananCategory[index][1];
-        let slugResult = dataMakananCategory[index][0];
+//         let predictionResult = dataMakananCategory[index][1];
+//         let slugResult = dataMakananCategory[index][0];
 
-        const dataNutrition = await prisma.foodStorage.findFirst({
-            where: {
-                namaMakanan: predictionResult
-            }
-        })
+//         const dataNutrition = await prisma.foodStorage.findFirst({
+//             where: {
+//                 namaMakanan: predictionResult
+//             }
+//         })
 
-        if (!dataNutrition) {
-            return {
-                status: 400,
-                error: true,
-                message: 'Data Nutrition tidak ditemukan',
-            }
-        }
+//         if (!dataNutrition) {
+//             return {
+//                 status: 400,
+//                 error: true,
+//                 message: 'Data Nutrition tidak ditemukan',
+//             }
+//         }
 
-        // console.log("Data Nutrition : ", dataNutrition);
+//         // console.log("Data Nutrition : ", dataNutrition);
 
-        return {
-            status: 200,
-            error: false,
-            message: "Upload Gambar Berhasil dan Prediksi Selesai",
-            data: {
-                // prediction: prediction,
-                // index: index,
-                // category: predictionResult,
-                nutrition: {
-                    id: dataNutrition.id,
-                    namaMakanan: dataNutrition.namaMakanan,
-                    karbohidrat: dataNutrition.karbohidrat,
-                    lemak: dataNutrition.lemak,
-                    protein: dataNutrition.protein,
-                    vitamin: dataNutrition.vitamin
-                },
-                indexValue: indexValue,
-                slugResult: slugResult,
-                file: file,
-            }
-        };
+//         return {
+//             status: 200,
+//             error: false,
+//             message: "Upload Gambar Berhasil dan Prediksi Selesai",
+//             data: {
+//                 // prediction: prediction,
+//                 // index: index,
+//                 // category: predictionResult,
+//                 nutrition: {
+//                     id: dataNutrition.id,
+//                     namaMakanan: dataNutrition.namaMakanan,
+//                     karbohidrat: dataNutrition.karbohidrat,
+//                     lemak: dataNutrition.lemak,
+//                     protein: dataNutrition.protein,
+//                     vitamin: dataNutrition.vitamin
+//                 },
+//                 indexValue: indexValue,
+//                 slugResult: slugResult,
+//                 file: file,
+//             }
+//         };
 
-    } catch (error) {
+//     } catch (error) {
 
-        return {
-            status: 400,
-            error: true,
-            message: 'Prediksi Gagal, Gambar tidak terdeteksi',
-            errorMessage: error.message,
-        };
+//         return {
+//             status: 400,
+//             error: true,
+//             message: 'Prediksi Gagal, Gambar tidak terdeteksi',
+//             errorMessage: error.message,
+//         };
 
-    }
+//     }
 
-}
+// }
 
-const uploadData = async (data) => {
+// const uploadData = async (data) => {
 
-    const { token, file, slugResult, waktuMakan, porsi, namaAktivitas } = data;
+//     const { token, file, slugResult, waktuMakan, porsi, namaAktivitas } = data;
 
-    const verify = verifyToken(token)
+//     const verify = verifyToken(token)
 
-    if (!verify) {
-        return {
-            status: 401,
-            error: true,
-            message: "Session has expired, please login again!!"
-        }
-    }
+//     if (!verify) {
+//         return {
+//             status: 401,
+//             error: true,
+//             message: "Session has expired, please login again!!"
+//         }
+//     }
 
-    try {
+//     try {
 
-        const uploadImageStorage = await handleImageUpload(file, slugResult);
+//         const uploadImageStorage = await handleImageUpload(file, slugResult);
 
-        const namaMakanan = slugResult.split('-').join(' ');
+//         const namaMakanan = slugResult.split('-').join(' ');
 
-        const dataNutrition = await prisma.foodStorage.findFirst({
-            where: {
-                namaMakanan: namaMakanan
-            }
-        })
+//         const dataNutrition = await prisma.foodStorage.findFirst({
+//             where: {
+//                 namaMakanan: namaMakanan
+//             }
+//         })
 
-        if (!dataNutrition) {
-            return {
-                status: 400,
-                error: true,
-                message: 'Data Nutrition tidak ditemukan',
-            }
-        }
+//         if (!dataNutrition) {
+//             return {
+//                 status: 400,
+//                 error: true,
+//                 message: 'Data Nutrition tidak ditemukan',
+//             }
+//         }
 
-        try {
-            await prisma.imageNutrition.create({
-                data: {
-                    idUser: verify.idUser,
-                    idMakanan: dataNutrition.id,
-                    NamaAktivitas: namaAktivitas,
-                    gambar: uploadImageStorage.publicUrl,
-                    waktuMakan: waktuMakan,
-                    porsi: parseInt(porsi),
-                }
-            })
-        } catch (error) {
-            await deleteImageStorage(uploadImageStorage.publicUrl);
-            return {
-                status: 400,
-                error: true,
-                message: 'Terjadi Masalahh saat Upload Data, Lakukan Upload Ulang!!',
-                errorMessage: error.message,
-            };
-        }
+//         try {
+//             await prisma.imageNutrition.create({
+//                 data: {
+//                     idUser: verify.idUser,
+//                     idMakanan: dataNutrition.id,
+//                     NamaAktivitas: namaAktivitas,
+//                     gambar: uploadImageStorage.publicUrl,
+//                     waktuMakan: waktuMakan,
+//                     porsi: parseInt(porsi),
+//                 }
+//             })
+//         } catch (error) {
+//             await deleteImageStorage(uploadImageStorage.publicUrl);
+//             return {
+//                 status: 400,
+//                 error: true,
+//                 message: 'Terjadi Masalahh saat Upload Data, Lakukan Upload Ulang!!',
+//                 errorMessage: error.message,
+//             };
+//         }
 
-        return {
-            status: 200,
-            error: false,
-            message: "Upload data Berhasil",
-            data: {
-                imageUrl: uploadImageStorage.publicUrl,
-                dataNutrition: dataNutrition,
-                slugResult: slugResult,
-                waktuMakan: waktuMakan,
-                porsi: porsi,
-                namaAktivitas: namaAktivitas
-            }
-        };
+//         return {
+//             status: 200,
+//             error: false,
+//             message: "Upload data Berhasil",
+//             data: {
+//                 imageUrl: uploadImageStorage.publicUrl,
+//                 dataNutrition: dataNutrition,
+//                 slugResult: slugResult,
+//                 waktuMakan: waktuMakan,
+//                 porsi: porsi,
+//                 namaAktivitas: namaAktivitas
+//             }
+//         };
 
-    } catch (error) {
+//     } catch (error) {
 
-        return {
-            status: 400,
-            error: true,
-            message: 'Upload Gagal, Lakukan Upload Ulang!!',
-            errorMessage: error.message,
-        };
+//         return {
+//             status: 400,
+//             error: true,
+//             message: 'Upload Gagal, Lakukan Upload Ulang!!',
+//             errorMessage: error.message,
+//         };
 
-    }
-}
+//     }
+// }
 
 module.exports = {
     getData,
     detailData,
-    uploadData,
-    predictImage,
+    // uploadData,
+    // predictImage,
     saveImageNutrition,
     getFoodStorage
 };
