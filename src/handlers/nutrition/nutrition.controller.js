@@ -1,7 +1,12 @@
 const express = require('express');
-const { getData, detailData } = require('./nutrition.service');
+const { getData, detailData, uploadData, predictImage } = require('./nutrition.service');
 const router = express.Router();
-// const extractToken = require('../../middlewares/extractToken');
+const multer = require("multer");
+const upload = multer({
+    limits: {
+        fileSize: 1 * 1024 * 1024 // 5 MB
+    }
+});
 
 function extractToken(req, res, next) {
     const authHeader = req.headers.authorization;
@@ -74,6 +79,116 @@ router.post('/detail', extractToken, async (req, res) => {
             message: 'Error occured while getting nutrition data',
             data: error.message
         })
+    }
+});
+
+router.post('/upload', extractToken, upload.single("image"), async (req, res) => {
+    try {
+
+        const { token } = req;
+
+        if (!token) {
+            return res.status(400).json({
+                error: true,
+                message: "token are required"
+            });
+        }
+
+        const { slugResult, waktuMakan, porsi, namaAktivitas } = req.body;
+
+        if (!slugResult || !waktuMakan || !porsi || !namaAktivitas) {
+            return res.status(400).json({
+                error: true,
+                message: "Fields are required"
+            });
+            
+        }
+
+        if (!req.file) {
+            res.status(400).json({
+                error: true,
+                message: "No file uploaded"
+            });
+            return;
+        }
+
+        const file = req.file
+
+        const response = await uploadData({ token, file, slugResult, waktuMakan, porsi, namaAktivitas});
+        const status = response.status;
+
+        console.log("LOG :", response);
+
+        res.status(status).json(response)
+
+    } catch (error) {
+
+        console.log("ERROR :", error.message);
+
+        res.status(500).json({
+            error: true,
+            message: 'Error occured while getting nutrition data',
+            data: error.message
+        })
+    }
+}, (error, req, res, next) => {
+    if (error instanceof multer.MulterError && error.code === 'LIMIT_FILE_SIZE') {
+        res.status(413).json({
+            error: true,
+            message: 'File size too large. Max size is 1MB'
+        })
+    } else {
+        next(error);
+    }
+});
+
+router.post('/predict', extractToken, upload.single("image"), async (req, res) => {
+    try {
+
+        const { token } = req;
+
+        if (!req.file) {
+            res.status(400).json({
+                error: true,
+                message: "No file uploaded"
+            });
+            return;
+        }
+
+        const file = req.file
+
+        if (!token) {
+            return res.status(400).json({
+                error: true,
+                message: "token are required"
+            });
+        }
+
+        const response = await predictImage({ token, file });
+        const status = response.status;
+
+        console.log("LOG :", response);
+
+        res.status(status).json(response)
+
+    } catch (error) {
+
+        console.log("ERROR :", error.message);
+
+        res.status(500).json({
+            error: true,
+            message: 'Error occured while predicting image',
+            data: error.message
+        })
+    }
+}, (error, req, res, next) => {
+    if (error instanceof multer.MulterError && error.code === 'LIMIT_FILE_SIZE') {
+        res.status(413).json({
+            error: true,
+            message: 'File size too large. Max size is 1MB'
+        })
+    } else {
+        next(error);
     }
 });
 

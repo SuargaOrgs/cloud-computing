@@ -43,9 +43,10 @@ model User {
 model FoodStorage {
   id          Int              @id @default(autoincrement())
   namaMakanan String           @db.Text
-  karbohidrat Int              @default(0) @db.SmallInt
-  lemak       Int              @default(0) @db.SmallInt
-  protein     Int              @default(0) @db.SmallInt
+  karbohidrat Float            @default(0) @db.Float
+  lemak       Float            @default(0) @db.Float
+  protein     Float            @default(0) @db.Float
+  vitamin     String?          @db.VarChar(255)
   createdAt   DateTime         @default(now()) @db.Date
   makanans    ImageNutrition[]
 
@@ -53,15 +54,17 @@ model FoodStorage {
 }
 
 model ImageNutrition {
-  id         Int         @id @default(autoincrement())
-  idUser     Int
-  idMakanan  Int
-  gambar     String      @default("") @db.Text
-  waktuMakan WaktuMakan
-  updated_at DateTime    @default(now()) @db.Date
-  created_at DateTime    @default(now()) @db.Date
-  makanan    FoodStorage @relation(fields: [idMakanan], references: [id], onDelete: Cascade)
-  user       User        @relation(fields: [idUser], references: [idUser], onDelete: Cascade)
+  id            Int         @id @default(autoincrement())
+  idUser        Int
+  idMakanan     Int
+  NamaAktivitas String      @db.Text
+  gambar        String      @default("") @db.Text
+  waktuMakan    WaktuMakan
+  porsi         Int         @default(1) @db.TinyInt
+  updated_at    DateTime    @default(now()) @db.Date
+  created_at    DateTime    @default(now()) @db.Date
+  makanan       FoodStorage @relation(fields: [idMakanan], references: [id], onDelete: Cascade)
+  user          User        @relation(fields: [idUser], references: [idUser], onDelete: Cascade)
 
   @@index([idMakanan], map: "ImageNutrition_idMakanan_fkey")
   @@index([idUser], map: "ImageNutrition_idUser_fkey")

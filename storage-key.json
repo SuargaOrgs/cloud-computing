@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "suargatesting",
+  "private_key_id": "130ce3fe6c18b4847da296ab952b4fcf55249d45",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDE/81El+8QVJp3\n7EVCAoJ2tMlQELuRlrCn93xQclmMqOnrRqE/se+xd8KkDZtRSxspzqvysrkUlcnU\nPHM4QVX915orzyeqSKujhxcdeeE3n8Ypr1pCBUfmVgTMJ9hijMG4phXk5JdI8CXa\nnqi83seS/qy2IoOqeNOhhBPN1NQQ/NIJAgdo8mI6Ws2MlM0cOR3AqhF8ieewmqOJ\n07UjdfPQgWeLmDhsiTTiEHOvg5jw8Qt5lcD/2rDXl4G4PQIqJlwM+uZYYgmRFl9N\nbCmmgmLuuraQticeaBQQ81aefq2rm/QjGHJDbVi4hWrtCKJSLlSwRuNDfJkHXecm\nV/nvWKmzAgMBAAECggEACiFFQuO1LVfMYaJKpWxPnR8Kww05N/FRwDFfuRtIM410\nCd8l54qU0sFfxuPUOsfr66hu+xnpnn9dU4aQPjJN47G0gdAzL/RwrwYBUEi2JhAX\nNomH0KFI4zVFJeJepCKsy3vu4EhI5z1CFQ3Xi27BQHPMGcmIj7mK2GFcS1dIWF8w\nfIEVQvh3yDDsIchs2V7svE2ShvPfnThH1CRS3TuvU9CXB7c0R75fyG9ZDifTOuFP\npeSUjCEAX0Xmsi2UIg5Q3+q+LaXi0cXmztsAa7b2EplrOk4oUURrPpUcKEVf0GNo\nligTU3pKY1IN+Sbki3m4ZqBZZprxECr32pQ+alzqIQKBgQD/TkCX705UThfYHjj5\n96xIM1xbC9xnoWCLWliHgb31Hgvm4hZOlPNT1cPFtRYNUjbWakifmvBQSOVa5DCv\nJlGxAJ4/Ylv8IcSH6Ns7WzgiM6ZlLNhJabg2Knc9OXc8w8PJ7+V/olSbz0t+scVI\nw3uXPsgcgMNqUgLeN/ly5t1R2wKBgQDFiPSnOpxmmWgoHylWHvIpoJM7pE2XEdFV\n/Qd76KC1DLYCFQ4k3tQNzjoH9TIJNijFc9xdp/NNi6L2DZu4rt5SJvp/u9R8+fnU\nmcFzezHO+DGAW2fFIxVQ/HzNei7IvQ89rg8hwtqb+Ndf6NoWErREyRnkxSDStQyj\nUz4XUcMrCQKBgQDiHLESnyxVeDCgBOxbXuKjs3FZZaDX21JBOUvs/5h4jhrmalht\nUnhLSKix4pbcR3Mv5UPar4Ok51rSbAU+KobxZ+W/p2JmZJXF9RKteDW3/NyjANux\n8ULoHiYrAEk9dPhjUeeFagTbVfW8CL/8mL1OD5l1vQjVkjreCt8Px64+PwKBgHda\n9HDjIkOAKAYuJfzqf+oVI0FjWpqQYotxcwc0nX4n6wXBESXIGhspY7kRN6WHOwVr\np1hTtdhCKjpAKLpjtuOut6dcp9zH8mO6b8BGTOdA4jArirz8INIpbYN+cyxJyB69\nwFjm8s5RgllqSfQSYyg41tN7JQUL7lH1Z0wR1Dp5AoGATxG3C6GRc1cshAGxtNSQ\nz94ONEVV746rLo4ChDw3s9DbQm0ik4R9uN4nyBcKnX1xTi1/eDAgrX4YP3r0IrRq\npkWjfWtIrqYYb9YDspOIZtV1J4JL2+gLHDzR8hTnJHAmaNYwiiwKD85gBs7BGXnZ\nlphGyK5l0Vs1RUIqloQMvdM=\n-----END PRIVATE KEY-----\n",
+  "client_email": "storageaccess@suargatesting.iam.gserviceaccount.com",
+  "client_id": "101133882049649942249",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/storageaccess%40suargatesting.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
