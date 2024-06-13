@@ -265,7 +265,7 @@ const predictImage = async (data) => {
 
     try {
 
-        const model = await tf.loadLayersModel('https://storage.googleapis.com/bucket-suarga-app/model/modelNW.json');
+        const model = await tf.loadLayersModel(process.env.MODEL_URL);
 
         const imageBuffer = file.buffer;
         const tensor = tf.node.decodeImage(imageBuffer, 3)
@@ -347,7 +347,6 @@ const predictImage = async (data) => {
                 },
                 indexValue: indexValue,
                 slugResult: slugResult,
-                file: file,
             }
         };
 

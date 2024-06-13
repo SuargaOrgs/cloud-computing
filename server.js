@@ -3,7 +3,6 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-const port = 3000;
 
 // 📦 Route
 const authRouter = require('./src/handlers/auth/auth.controller');
@@ -28,35 +27,12 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/assessment', assessmentRouter);
 app.use('/api/v1/nutrition', nutritionRouter);
 
-app.get('/predict', async (_req, res) => {
-    try {
-
-        const model = await tf.loadLayersModel('https://storage.googleapis.com/bucket-suarga-app/model/modelNW.json');
-        // const model = await tf.loadGraphModel('https://storage.googleapis.com/bucket-suarga-app/model/modelNW.json');
-        // const model = await tf.loadLayersModel('https://storage.googleapis.com/pcp-detection/model.json');
-        
-        model ? console.log(model) : console.log("Model Loaded Failed");
-
-        res.json({
-            message: "Model Loaded Successfully",
-            data: {
-                model: model
-            }
-        });
-
-    } catch (error) {
-        return res.status(400).json({
-            message: "Predict Gagal",
-            error: error.message
-        });
-    }
-});
-
 // 💨 Not Found Route
 app.get("*", (_req, res) => {
     res.status(404).send("Route Not found");
 });
 
+const port = process.env.PORT || 8080
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+    console.log(`Project run on port: ${port}`);
 });
