@@ -28,7 +28,6 @@ tf.serialization.registerClass(L2);
 
 // SERVICE API 
 
-
 const getData = async (data) => {
     const { token } = data;
 
@@ -266,7 +265,6 @@ const predictImage = async (data) => {
     try {
 
         const model = await tf.loadLayersModel(process.env.MODEL_URL);
-
         const imageBuffer = file.buffer;
         const tensor = tf.node.decodeImage(imageBuffer, 3)
             .resizeNearestNeighbor([299, 299])
