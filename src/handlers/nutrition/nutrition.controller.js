@@ -1,5 +1,5 @@
 const express = require('express');
-const { getData, detailData, uploadData, predictImage, saveImageNutrition, getFoodStorage } = require('./nutrition.service');
+const { getData, detailData, uploadData, predictImage, getFoodStorage } = require('./nutrition.service');
 const router = express.Router();
 const multer = require("multer");
 const upload = multer({
@@ -76,33 +76,6 @@ router.post('/detail', extractToken, async (req, res) => {
     }
 });
 
-// POST /api/v1/nutrition/imageNutrition
-router.post('/imageNutrition', extractToken, async (req, res) => {
-    try {
-        const { token } = req;
-        const { linkGambar, namaAktivitas, waktuMakan, idMakanan, porsi } = req.body;
-
-        if (!token || !linkGambar || !namaAktivitas || !waktuMakan || !idMakanan || !porsi) {
-            return res.status(400).json({
-                error: true,
-                message: "All fields are required"
-            });
-        }
-
-        const response = await saveImageNutrition({ token, linkGambar, namaAktivitas, waktuMakan, idMakanan, porsi });
-        const status = response.status;
-
-        res.status(status).json(response)
-    } catch (error) {
-        console.log("ERROR :", error.message);
-
-        res.status(500).json({
-            error: true,
-            message: 'Error occurred while saving image nutrition data',
-            data: error.message
-        })
-    }
-});
 
 // POST /api/v1/nutrition/upload
 router.post('/upload', extractToken, upload.single("image"), async (req, res) => {

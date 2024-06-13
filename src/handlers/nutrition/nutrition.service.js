@@ -165,47 +165,6 @@ const detailData = async (data) => {
     }
 };
 
-const saveImageNutrition = async (data) => {
-    const { token, linkGambar, namaAktivitas, waktuMakan, idMakanan, porsi } = data;
-
-    const verify = verifyToken(token);
-
-    if (!verify) {
-        return {
-            status: 401,
-            error: true,
-            message: "Session has expired, please login again!!"
-        };
-    }
-
-    try {
-        const imageNutrition = await prisma.imageNutrition.create({
-            data: {
-                idUser: verify.idUser,
-                idMakanan,
-                NamaAktivitas: namaAktivitas,
-                gambar: linkGambar,
-                waktuMakan,
-                porsi : parseInt(porsi)
-            }
-        });
-
-        return {
-            status: 201,
-            error: false,
-            message: "Image nutrition data has been saved",
-            data: imageNutrition
-        };
-    } catch (error) {
-        return {
-            status: 500,
-            error: true,
-            message: 'Failed to save image nutrition data',
-            data: error.message
-        };
-    }
-};
-
 const getFoodStorage = async (data) => {
     const { token } = data;
 
@@ -399,7 +358,7 @@ const uploadData = async (data) => {
             await prisma.imageNutrition.create({
                 data: {
                     idUser: verify.idUser,
-                    idMakanan: dataNutrition.id,
+                    idMakanan: parseInt(dataNutrition.id),
                     NamaAktivitas: namaAktivitas,
                     gambar: uploadImageStorage.publicUrl,
                     waktuMakan: waktuMakan,
@@ -447,6 +406,5 @@ module.exports = {
     detailData,
     uploadData,
     predictImage,
-    saveImageNutrition,
     getFoodStorage
 };
