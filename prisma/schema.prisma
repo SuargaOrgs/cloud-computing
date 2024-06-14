@@ -70,6 +70,17 @@ model ImageNutrition {
   @@index([idUser], map: "ImageNutrition_idUser_fkey")
 }
 
+model Article {
+  idArticle   Int      @id @default(autoincrement())
+  judul       String
+  deskripsi   String
+  gambar      String
+  createdAt   DateTime @default(now()) @db.Date
+  updatedAt   DateTime @default(now()) @db.Date
+
+  @@index([idArticle], map: "article_index")
+}
+
 enum WaktuMakan {
   Pagi
   Siang

@@ -77,7 +77,7 @@ router.post('/detail', extractToken, async (req, res) => {
 });
 
 // POST /api/v1/nutrition/imageNutrition
-router.post('/imageNutrition', extractToken, upload.single("image"), async (req, res) => {
+router.post('/imageNutrition', extractToken, async (req, res) => {
     try {
         const { token } = req;
         const { namaAktivitas, waktuMakan, idMakanan, porsi } = req.body;
@@ -89,17 +89,7 @@ router.post('/imageNutrition', extractToken, upload.single("image"), async (req,
             });
         }
 
-        if (!req.file) {
-            res.status(400).json({
-                error: true,
-                message: "No file uploaded"
-            });
-            return;
-        }
-
-        const file = req.file
-
-        const response = await saveImageNutrition({ token, file, namaAktivitas, waktuMakan, idMakanan, porsi });
+        const response = await saveImageNutrition({ token, namaAktivitas, waktuMakan, idMakanan, porsi });
         const status = response.status;
 
         res.status(status).json(response)

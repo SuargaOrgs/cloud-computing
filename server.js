@@ -9,6 +9,7 @@ const port = 3000;
 const authRouter = require('./src/handlers/auth/auth.controller');
 const assessmentRouter = require('./src/handlers/assessment/assessment.controller');
 const nutritionRouter = require('./src/handlers/nutrition/nutrition.controller');
+const articleRouter = require('./src/handlers/article/article.controller');
 
 app.use(cors());
 app.use(express.json());
@@ -27,6 +28,7 @@ app.get("/api/v1", (_req, res) => {
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/assessment', assessmentRouter);
 app.use('/api/v1/nutrition', nutritionRouter);
+app.use('/api/v1/article', articleRouter);
 
 app.get('/predict', async (_req, res) => {
     try {

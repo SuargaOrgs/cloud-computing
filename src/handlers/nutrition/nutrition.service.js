@@ -1,6 +1,6 @@
 const prisma = require('../../helpers/prisma');
-const { handleImageUpload, deleteImageStorage } = require('../../helpers/storageImages');
 const { verifyToken } = require('../../middlewares/jwt');
+const { handleImageUpload, deleteImageStorage } = require('../../helpers/storageImages');
 const { formatDateText } = require('../../helpers/formatDate');
 // const tf = require('@tensorflow/tfjs-node');
 
@@ -166,7 +166,7 @@ const detailData = async (data) => {
 };
 
 const saveImageNutrition = async (data) => {
-    const { token, file, namaAktivitas, waktuMakan, idMakanan, porsi } = data;
+    const { token, namaAktivitas, waktuMakan, idMakanan, porsi } = data;
 
     const verify = verifyToken(token);
 
@@ -179,15 +179,6 @@ const saveImageNutrition = async (data) => {
     }
 
     try {
-
-        const getNamaMakanan = await prisma.foodStorage.findFirst({
-            where: { id: parseInt(idMakanan) },
-            select: { namaMakanan: true }
-        });
-
-        const getSlug = getNamaMakanan.namaMakanan.toLowerCase().split(' ').join('-');
-
-        const storeImage = await handleImageUpload(file, getSlug);
 
         try {
             await prisma.imageNutrition.create({
