@@ -20,7 +20,7 @@ async function editData(data) {
         const data = {
             namaLengkap,
             email,
-            tanggalLahir,
+            tanggalLahir : tanggalLahir ? new Date(tanggalLahir) : undefined,
         }
 
         await prisma.user.update({
