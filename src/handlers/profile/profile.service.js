@@ -18,8 +18,8 @@ async function editData(data) {
     try {
 
         const data = {
-            namaLengkap,
-            email,
+            namaLengkap : namaLengkap ? namaLengkap : undefined,
+            email : email ? email.toLowerCase() : undefined,
             tanggalLahir : tanggalLahir ? new Date(tanggalLahir) : undefined,
         }
 
