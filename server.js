@@ -10,6 +10,7 @@ const authRouter = require('./src/handlers/auth/auth.controller');
 const assessmentRouter = require('./src/handlers/assessment/assessment.controller');
 const nutritionRouter = require('./src/handlers/nutrition/nutrition.controller');
 const articleRouter = require('./src/handlers/article/article.controller');
+const profileRouter = require('./src/handlers/profile/profile.controller');
 
 app.use(cors());
 app.use(express.json());
@@ -29,6 +30,7 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/assessment', assessmentRouter);
 app.use('/api/v1/nutrition', nutritionRouter);
 app.use('/api/v1/article', articleRouter);
+app.use('/api/v1/profile', profileRouter);
 
 app.get('/predict', async (_req, res) => {
     try {
