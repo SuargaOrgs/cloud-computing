@@ -115,9 +115,9 @@ const detailData = async (data) => {
         const nutrition = await prisma.imageNutrition.findMany({
             where: {
                 idUser: verify.idUser,
-                update_at: {
+                updated_at: {
                     gte: currentDate,
-                    lte: nextDate
+                    lt: nextDate
                 }
             },
             select: {
