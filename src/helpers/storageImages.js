@@ -4,7 +4,8 @@ const path = require('path');
 
 const storage = new Storage({
     projectId: 'suargatesting',
-    keyFilename: path.join(__dirname, '../../storage-key.json'),
+    // keyFilename: path.join(__dirname, './storage-key.json'),
+    keyFilename: path.resolve('./storageKey.json'),
 });
 
 const bucket = storage.bucket('bucket-suarga-app');

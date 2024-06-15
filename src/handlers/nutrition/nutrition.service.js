@@ -243,6 +243,7 @@ const predictImage = async (data) => {
                 error: true,
                 message: 'Upload atau Prediksi Gagal',
                 indexValue: indexValue,
+                prediction: prediction,
             };
         } else if (indexValue < 0.5) {
             return {
@@ -250,6 +251,7 @@ const predictImage = async (data) => {
                 error: true,
                 message: 'Prediksi Gagal, Gambar tidak terdeteksi',
                 indexValue: indexValue,
+                prediction: prediction,
             };
         }
 
@@ -268,7 +270,6 @@ const predictImage = async (data) => {
         // console.log("Data Makanan Category : ", dataMakananCategory);
 
         let predictionResult = dataMakananCategory[index][1];
-        let slugResult = dataMakananCategory[index][0];
 
         const dataNutrition = await prisma.foodStorage.findFirst({
             where: {
@@ -303,7 +304,6 @@ const predictImage = async (data) => {
                     vitamin: dataNutrition.vitamin
                 },
                 indexValue: indexValue,
-                slugResult: slugResult,
             }
         };
 
@@ -322,7 +322,7 @@ const predictImage = async (data) => {
 
 const uploadData = async (data) => {
 
-    const { token, file, slugResult, waktuMakan, porsi, namaAktivitas } = data;
+    const { token, file, idMakanan, waktuMakan, porsi, namaAktivitas } = data;
 
     const verify = verifyToken(token)
 
@@ -336,17 +336,13 @@ const uploadData = async (data) => {
 
     try {
 
-        const uploadImageStorage = await handleImageUpload(file, slugResult);
-
-        const namaMakanan = slugResult.split('-').join(' ');
-
-        const dataNutrition = await prisma.foodStorage.findFirst({
+        const getMakanan = await prisma.foodStorage.findFirst({
             where: {
-                namaMakanan: namaMakanan
+                id: parseInt(idMakanan)
             }
         })
 
-        if (!dataNutrition) {
+        if (!getMakanan) {
             return {
                 status: 400,
                 error: true,
@@ -354,11 +350,15 @@ const uploadData = async (data) => {
             }
         }
 
+        const getSlug = getMakanan.namaMakanan.split(' ').join('-');
+
+        const uploadImageStorage = await handleImageUpload(file, getSlug);
+
         try {
             await prisma.imageNutrition.create({
                 data: {
                     idUser: verify.idUser,
-                    idMakanan: parseInt(dataNutrition.id),
+                    idMakanan: parseInt(idMakanan),
                     NamaAktivitas: namaAktivitas,
                     gambar: uploadImageStorage.publicUrl,
                     waktuMakan: waktuMakan,
@@ -381,8 +381,7 @@ const uploadData = async (data) => {
             message: "Upload data Berhasil",
             data: {
                 imageUrl: uploadImageStorage.publicUrl,
-                dataNutrition: dataNutrition,
-                slugResult: slugResult,
+                dataNutrition: getMakanan,
                 waktuMakan: waktuMakan,
                 porsi: porsi,
                 namaAktivitas: namaAktivitas

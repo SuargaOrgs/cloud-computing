@@ -89,9 +89,9 @@ router.post('/upload', extractToken, upload.single("image"), async (req, res) =>
             });
         }
 
-        const { slugResult, waktuMakan, porsi, namaAktivitas } = req.body;
+        const { idMakanan, waktuMakan, porsi, namaAktivitas } = req.body;
 
-        if (!slugResult || !waktuMakan || !porsi || !namaAktivitas) {
+        if (!idMakanan || !waktuMakan || !porsi || !namaAktivitas) {
             return res.status(400).json({
                 error: true,
                 message: "Fields are required"
@@ -109,7 +109,7 @@ router.post('/upload', extractToken, upload.single("image"), async (req, res) =>
 
         const file = req.file
 
-        const response = await uploadData({ token, file, slugResult, waktuMakan, porsi, namaAktivitas});
+        const response = await uploadData({ token, file, idMakanan, waktuMakan, porsi, namaAktivitas});
         const status = response.status;
 
         console.log("LOG :", response);
