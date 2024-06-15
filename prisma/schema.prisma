@@ -17,8 +17,8 @@ model Assessment {
   karbohidrat     Int      @default(0) @db.SmallInt
   protein         Int      @default(0) @db.SmallInt
   lemak           Int      @default(0) @db.SmallInt
-  created_at      DateTime @default(now()) @db.Date
-  updated_at      DateTime @default(now()) @db.Date
+  created_at      DateTime @default(now()) @db.Timestamp(0)
+  updated_at      DateTime @default(now()) @db.Timestamp(0)
   user            User     @relation(fields: [idUser], references: [idUser], onDelete: Cascade)
 
   @@index([idAssessment, idUser], map: "assessment_index")
@@ -32,8 +32,8 @@ model User {
   namaLengkap      String
   tanggalLahir     DateTime?        @db.Date
   tanggalKehamilan DateTime?        @db.Date
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @default(now())
+  createdAt        DateTime         @default(now()) @db.Timestamp(3)
+  updatedAt        DateTime         @default(now()) @db.Timestamp(3)
   assessments      Assessment[]
   imageNutritions  ImageNutrition[]
 
@@ -47,7 +47,7 @@ model FoodStorage {
   lemak       Float            @default(0) @db.Float
   protein     Float            @default(0) @db.Float
   vitamin     String?          @db.VarChar(255)
-  createdAt   DateTime         @default(now()) @db.Date
+  createdAt   DateTime         @default(now()) @db.Timestamp(0)
   makanans    ImageNutrition[]
 
   @@index([id], map: "foodstorage_index")
@@ -61,8 +61,8 @@ model ImageNutrition {
   gambar        String      @default("") @db.Text
   waktuMakan    WaktuMakan
   porsi         Int         @default(1) @db.TinyInt
-  updated_at    DateTime    @default(now()) @db.Date
-  created_at    DateTime    @default(now()) @db.Date
+  updated_at    DateTime    @default(now()) @db.Timestamp(0)
+  created_at    DateTime    @default(now()) @db.Timestamp(0)
   makanan       FoodStorage @relation(fields: [idMakanan], references: [id], onDelete: Cascade)
   user          User        @relation(fields: [idUser], references: [idUser], onDelete: Cascade)
 
@@ -71,12 +71,12 @@ model ImageNutrition {
 }
 
 model Article {
-  idArticle   Int      @id @default(autoincrement())
-  judul       String
-  deskripsi   String
-  gambar      String
-  createdAt   DateTime @default(now()) @db.Date
-  updatedAt   DateTime @default(now()) @db.Date
+  idArticle Int      @id @default(autoincrement())
+  judul     String
+  deskripsi String
+  gambar    String
+  createdAt DateTime @default(now()) @db.Timestamp(0)
+  updatedAt DateTime @default(now()) @db.Timestamp(0)
 
   @@index([idArticle], map: "article_index")
 }
