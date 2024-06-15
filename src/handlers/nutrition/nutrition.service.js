@@ -113,6 +113,7 @@ const detailData = async (data) => {
                 idMakanan: true,
                 gambar: true,
                 waktuMakan: true,
+                porsi: true,
                 makanan: {
                     select: {
                         namaMakanan: true,
@@ -141,6 +142,7 @@ const detailData = async (data) => {
             idMakanan: item.idMakanan,
             gambar: item.gambar,
             waktuMakan: item.waktuMakan,
+            porsi: item.porsi,
             namaMakanan: item.makanan.namaMakanan,
             karbohidrat: item.makanan.karbohidrat,
             lemak: item.makanan.lemak,
