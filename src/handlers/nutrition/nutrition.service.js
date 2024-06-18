@@ -106,19 +106,9 @@ const detailData = async (data) => {
 
     try {
 
-        const currentDate = new Date();
-        currentDate.setHours(0, 0, 0, 0);
-
-        const nextDate = new Date(currentDate);
-        nextDate.setDate(currentDate.getDate() + 1);
-
         const nutrition = await prisma.imageNutrition.findMany({
             where: {
                 idUser: verify.idUser,
-                updated_at: {
-                    gte: currentDate,
-                    lt: nextDate
-                }
             },
             select: {
                 id: true,
