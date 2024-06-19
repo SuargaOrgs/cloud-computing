@@ -44,6 +44,7 @@ const getData = async (data) => {
     try {
         const nutrition = await prisma.imageNutrition.findMany({
             where: { idUser: verify.idUser },
+            orderBy: { created_at: 'desc' },
             select: {
                 id: true,
                 idUser: true,
@@ -67,7 +68,7 @@ const getData = async (data) => {
         const formatData = nutrition.map((item) => {
 
             let converDate = convertDateJKT(item.created_at)
-
+        
             return {
                 id: item.id,
                 idUser: item.idUser,
@@ -76,7 +77,8 @@ const getData = async (data) => {
                 keterangan: item.waktuMakan + " | " + formatDateText(converDate),
                 created_at: converDate,
             }
-        }).sort((a, b) => b.created_at - a.created_at);
+            
+        })
 
         return {
             status: 200,
