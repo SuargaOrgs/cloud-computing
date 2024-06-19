@@ -65,13 +65,16 @@ const getData = async (data) => {
         }
 
         const formatData = nutrition.map((item) => {
+
+            let converDate = convertDateJKT(item.created_at)
+
             return {
                 id: item.id,
                 idUser: item.idUser,
                 gambar: item.gambar,
                 namaMakanan: item.makanan.namaMakanan,
-                keterangan: item.waktuMakan + " | " + formatDateText(item.created_at),
-                created_at: convertDateJKT(item.created_at),
+                keterangan: item.waktuMakan + " | " + formatDateText(converDate),
+                created_at: converDate,
             }
         }).sort((a, b) => b.created_at - a.created_at);
 
