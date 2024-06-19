@@ -1,7 +1,7 @@
 const prisma = require('../../helpers/prisma');
 const { verifyToken } = require('../../middlewares/jwt');
 const { handleImageUpload, deleteImageStorage } = require('../../helpers/storageImages');
-const { formatDateText } = require('../../helpers/formatDate');
+const { formatDateText, convertDateJKT } = require('../../helpers/formatDate');
 // const tf = require('@tensorflow/tfjs-node');
 
 // class L2 extends tf.regularizers.l1l2 {
@@ -71,7 +71,7 @@ const getData = async (data) => {
                 gambar: item.gambar,
                 namaMakanan: item.makanan.namaMakanan,
                 keterangan: item.waktuMakan + " | " + formatDateText(item.created_at),
-                created_at: item.created_at
+                created_at: convertDateJKT(item.created_at),
             }
         }).sort((a, b) => b.created_at - a.created_at);
 
