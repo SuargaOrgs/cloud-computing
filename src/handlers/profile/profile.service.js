@@ -3,7 +3,7 @@ const { verifyToken } = require('../../middlewares/jwt');
 
 async function editData(data) {
 
-    const { token, namaLengkap, email, tanggalLahir } = data;
+    const { token, namaLengkap, email, tanggalAwalHamil } = data;
 
     const verify = verifyToken(token);
 
@@ -20,7 +20,7 @@ async function editData(data) {
         const data = {
             namaLengkap : namaLengkap ? namaLengkap : undefined,
             email : email ? email.toLowerCase() : undefined,
-            tanggalLahir : tanggalLahir ? new Date(tanggalLahir) : undefined,
+            tanggalKehamilan : tanggalAwalHamil ? new Date(tanggalAwalHamil) : undefined,
         }
 
         await prisma.user.update({

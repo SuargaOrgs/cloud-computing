@@ -16,7 +16,7 @@ router.get('/', (_req, res) => {
 router.post('/edit', extractToken, async (req, res) => {
     try {
         const { token } = req;
-        const { namaLengkap, email, tanggalLahir } = req.body;
+        const { namaLengkap, email, tanggalAwalHamil } = req.body;
 
         if (!token) {
             return res.status(400).json({
@@ -25,7 +25,7 @@ router.post('/edit', extractToken, async (req, res) => {
             });
         }
 
-        const response = await editData({ token, namaLengkap, email, tanggalLahir });
+        const response = await editData({ token, namaLengkap, email, tanggalAwalHamil });
         const status = response.status;
 
         console.log("LOG :", response);
